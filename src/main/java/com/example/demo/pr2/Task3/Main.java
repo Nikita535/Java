@@ -11,31 +11,24 @@ public class Main {
         System.out.println(Integer.toHexString(calculateCRC16("src/main/java/com/example/demo/pr2/Task3/test.txt")).toUpperCase());
     }
     public static int calculateCRC16(String filePath) throws IOException {
-        final int CRC16_POLYNOMIAL = 0x1021;
+        try (FileInputStream fileInputStream = new FileInputStream(filePath);
+             FileChannel fileChannel = fileInputStream.getChannel()) {
+            ByteBuffer buffer = ByteBuffer.allocate(2); // 16 бит (2 байта) для хранения контрольной суммы
 
-        try (FileInputStream fis = new FileInputStream(filePath);
-             FileChannel channel = fis.getChannel()) {
+            while (fileChannel.read(buffer) != -1) {
+                buffer.flip(); // Переключаем буфер в режим чтения
 
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            int crc = 0xFFFF; // Инициализируем CRC-16 значением 0xFFFF.
-
-            while (channel.read(buffer) != -1) {
-                buffer.flip(); // Переключаем ByteBuffer в режим чтения.
+                // Вычисляем контрольную сумму с использованием XOR
+                short checksum = 0;
                 while (buffer.hasRemaining()) {
-                    int data = buffer.get() & 0xFF; // Получаем младший байт данных.
-                    crc ^= (data << 8); // XOR с младшим байтом данных.
-                    for (int i = 0; i < 8; i++) {
-                        if ((crc & 0x8000) != 0) {
-                            crc = (crc << 1) ^ CRC16_POLYNOMIAL; // Сдвиг влево и XOR с полиномом, если старший бит равен 1.
-                        } else {
-                            crc <<= 1; // Простой сдвиг влево.
-                        }
-                    }
+                    checksum ^= buffer.getShort();
                 }
-                buffer.clear(); // Очищаем ByteBuffer для следующей порции данных.
+
+                buffer.clear(); // Очищаем буфер для следующего чтения
+                return checksum;
             }
-            return crc & 0xFFFF; // Оставляем только младшие 16 битов CRC.
         }
+        return 0; // Если файл пустой, вернем ноль или другое значение по умолчанию
     }
 
 
