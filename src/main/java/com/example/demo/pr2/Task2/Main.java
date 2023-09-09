@@ -16,6 +16,9 @@ public class Main {
         long startTime = System.currentTimeMillis();
         copyFileWithInputOutputStreams();
         long endTime = System.currentTimeMillis();
+        System.out.println("Время копирования (Input/Output): " + (endTime - startTime) + " миллисекунд");
+
+
 
         //2
         startTime = System.currentTimeMillis();
