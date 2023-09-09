@@ -8,9 +8,6 @@ import java.util.*;
 
 public class Observer {
     private static Map<Path, String> fileContents = new HashMap<>();
-
-
-
     public static void main(String[] args) {
         fileContents.put(Paths.get("src/main/java/com/example/demo/pr2/Task4/test.txt"),"");
         try {
@@ -59,11 +56,9 @@ public class Observer {
     }
 
     private static void analyzeFileChanges(String previousContent, String currentContent) {
-        // Разделяем строки предыдущего и текущего содержимого
         String[] previousLines = previousContent.split("\n");
         String[] currentLines = currentContent.split("\n");
 
-        // Создаем множества для строк предыдущего и текущего содержимого
         Set<String> previousSet = new HashSet<>();
         Set<String> currentSet = new HashSet<>();
 
@@ -75,14 +70,12 @@ public class Observer {
             currentSet.add(line);
         }
 
-        // Находим добавленные строки
         for (String line : currentSet) {
             if (!previousSet.contains(line)) {
                 System.out.println("Добавлена строка: " + line);
             }
         }
 
-        // Находим удаленные строки
         for (String line : previousSet) {
             if (!currentSet.contains(line)) {
                 System.out.println("Удалена строка: " + line);
