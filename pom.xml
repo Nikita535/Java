@@ -5,7 +5,8 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>PR4</module>
-	</modules>
+        <module>PR5</module>
+    </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>

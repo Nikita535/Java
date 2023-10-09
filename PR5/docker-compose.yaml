@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  app1:
+    container_name: pr1
+    image: nekiynekit/5pr
+
+  app2:
+    container_name: pr2
+    image: nekiynekit/5pr
+
+  app3:
+    container_name: pr3
+    image: nekiynekit/5pr
+
+  app4:
+    container_name: pr4
+    image: nekiynekit/5pr
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf

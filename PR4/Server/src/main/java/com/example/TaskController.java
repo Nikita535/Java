@@ -38,9 +38,6 @@ public class TaskController {
 
     @MessageMapping("taskChannel")
     public Flux<Task> TaskChannel(Flux<Task> Tasks){
-        // block()/blockFirst()/blockLast() are blocking, which is not supported in thread reactor-http-nio-3
-        // return Flux.fromIterable(TaskRepository.saveAll(Tasks.collectList().block()));
-        // Используем Mono.fromCallable, чтобы асинхронно вызвать метод TaskRepository::save для каждого кота и вернуть результаты как Flux.
         return Tasks.flatMap(Task -> Mono.fromCallable(() -> taskRepository.save(Task)))
                 .collectList()
                 .flatMapMany(savedTasks -> Flux.fromIterable(savedTasks));
