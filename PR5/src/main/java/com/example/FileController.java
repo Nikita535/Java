@@ -32,7 +32,8 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("filename") String filenameWithoutExtension) {
+    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("filename") String filenameWithoutExtension) {
+        System.out.println("Сюда пришел запрос");
         if (!file.isEmpty()) {
             try {
                 String originalFilename = file.getOriginalFilename();
